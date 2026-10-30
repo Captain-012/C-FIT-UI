@@ -1,0 +1,342 @@
+/* =========================
+   C-FIT REGISTER
+========================= */
+
+.register-page {
+    min-height: 100vh;
+    display: flex;
+    background: #090909;
+    color: #ffffff;
+}
+
+/* LEFT FORM */
+
+.register-card {
+    width: 50%;
+    max-width: 620px;
+    min-height: 100vh;
+    box-sizing: border-box;
+
+    padding: 45px 70px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background: #0d0d0d;
+}
+
+/* LOGO */
+
+.register-logo {
+    margin-bottom: 25px;
+}
+
+.register-logo img {
+    width: 155px;
+    height: auto;
+    display: block;
+}
+
+/* HEADING */
+
+.register-heading {
+    margin-bottom: 25px;
+}
+
+.register-label {
+    margin-bottom: 12px;
+
+    color: #ff6a00;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.register-heading h1 {
+    margin: 0 0 10px;
+
+    font-size: 38px;
+    line-height: 1.1;
+    font-weight: 800;
+}
+
+.register-heading h1 span {
+    color: #ff6a00;
+}
+
+.register-heading>p:last-child {
+    margin: 0;
+
+    color: #888;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* INPUTS */
+
+.register-input {
+    margin-bottom: 16px;
+}
+
+.register-input label {
+    display: block;
+    margin-bottom: 7px;
+
+    color: #d5d5d5;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.register-input input {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 14px 15px;
+
+    border: 1px solid #292929;
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #141414;
+    color: #ffffff;
+
+    font-size: 14px;
+
+    transition: 0.25s;
+}
+
+.register-input input::placeholder {
+    color: #5f5f5f;
+}
+
+.register-input input:focus {
+    border-color: #ff6a00;
+
+    box-shadow:
+        0 0 0 3px rgba(255, 106, 0, 0.08),
+        0 0 20px rgba(255, 106, 0, 0.08);
+}
+
+
+.password-field {
+    position: relative;
+}
+
+.register-input .password-field input {
+    padding-right: 45px;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #888;
+    cursor: pointer;
+}
+
+.password-toggle:hover {
+    color: #ff6a00;
+}
+
+.password-toggle:focus-visible {
+    outline: 2px solid #ff6a00;
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+
+/* REGISTER BUTTON */
+
+.register-button {
+    width: 100%;
+
+    margin-top: 6px;
+    padding: 15px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #ff6a00;
+    color: #090909;
+
+    font-size: 15px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+}
+
+.register-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 30px rgba(255, 106, 0, 0.25);
+}
+
+/* DIVIDER */
+
+.register-divider {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    margin: 22px 0;
+
+    color: #555;
+    font-size: 11px;
+}
+
+.register-divider::before,
+.register-divider::after {
+    content: "";
+
+    flex: 1;
+    height: 1px;
+
+    background: #292929;
+}
+
+/* GOOGLE */
+
+.google-button {
+    width: 100%;
+    padding: 13px;
+
+    border: 1px solid #292929;
+    border-radius: 9px;
+
+    background: transparent;
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+}
+
+.google-button:hover {
+    border-color: #444;
+    background: #151515;
+}
+
+/* LOGIN LINK */
+
+.register-login {
+    margin-top: 22px;
+
+    text-align: center;
+
+    color: #777;
+    font-size: 13px;
+}
+
+.register-login a {
+    margin-left: 5px;
+
+    color: #ff6a00;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.register-login a:hover {
+    text-decoration: underline;
+}
+
+/* RIGHT SHOWCASE */
+
+.register-showcase {
+    flex: 1;
+
+    position: relative;
+
+    display: flex;
+    align-items: flex-end;
+
+    padding: 70px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(90deg,
+            #090909 0%,
+            rgba(9, 9, 9, 0.45) 45%,
+            rgba(9, 9, 9, 0.1) 100%),
+        url("/fitness-auth-clean.jpg");
+
+    background-size: cover;
+    background-position: 80% center;
+}
+
+.showcase-content {
+    max-width: 470px;
+}
+
+.showcase-content>p:first-child {
+    color: #ff6a00;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 3px;
+}
+
+.showcase-content h2 {
+    margin: 12px 0;
+
+    font-size: 50px;
+    line-height: 1;
+
+    letter-spacing: -2px;
+}
+
+.showcase-content h2 span {
+    display: block;
+    color: #ff6a00;
+}
+
+.showcase-content>p:last-child {
+    max-width: 400px;
+
+    color: #aaa;
+
+    line-height: 1.7;
+}
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+
+    .register-page {
+        display: block;
+    }
+
+    .register-card {
+        width: 100%;
+        max-width: none;
+
+        padding: 40px 25px;
+    }
+
+    .register-showcase {
+        display: none;
+    }
+
+    .register-heading h1 {
+        font-size: 32px;
+    }
+}

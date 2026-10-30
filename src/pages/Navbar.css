@@ -1,0 +1,50 @@
+
+.cf-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding: 18px 35px;
+    background: #1a1a1a;
+    border-bottom: 1px solid #333333;
+}
+
+.cf-logo {
+    color: #ff6b00;
+    font-size: 25px;
+    font-weight: 800;
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.cf-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.cf-nav-links a {
+    color: #aaaaaa;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.cf-nav-links a:hover,
+.cf-nav-links a.active {
+    color: #ff6b00;
+}
+
+@media (max-width: 600px) {
+    .cf-navbar {
+        flex-direction: column;
+        padding: 18px;
+        gap: 18px;
+    }
+
+    .cf-nav-links {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+}
