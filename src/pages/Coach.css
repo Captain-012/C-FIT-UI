@@ -236,6 +236,19 @@
     margin-bottom: 20px;
 }
 
+.coach-header h1 {
+    margin: 0;
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+.coach-header p {
+    margin: 0;
+    max-width: 250px;
+    color: #aaa;
+    font-size: 14px;
+}
+
 .clear-chat-btn {
     background: transparent;
     color: #ff6b00;
@@ -282,6 +295,40 @@
     font-size: 12px;
     margin-left: 6px;
     white-space: nowrap;
+}
+
+.markdown-table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 15px 0;
+    border-radius: 8px;
+}
+
+.markdown-table-wrapper table {
+    width: 100%;
+    min-width: 480px;
+    border-collapse: collapse;
+}
+
+.markdown-table-wrapper th,
+.markdown-table-wrapper td {
+    padding: 10px 12px;
+    border: 1px solid #333;
+    text-align: left;
+    vertical-align: top;
+    min-width: 110px;
+    white-space: normal;
+}
+
+.markdown-table-wrapper th {
+    background: #ff6b00;
+    color: #fff;
+}
+
+.markdown-table-wrapper td {
+    background: #1b1b1b;
+    color: #eee;
 }
 
 @keyframes typingBounce {

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import "./Coach.css";
 import ReactMarkdown from "react-markdown";
-import Swal from "sweetalert2"
+import Swal from "sweetalert2";
+import remarkGfm from "remark-gfm";
 
 const Coach = () => {
 
@@ -249,7 +250,18 @@ const Coach = () => {
                             key={index}
                         >
                             {item.role === "assistant" ? (
-                                <ReactMarkdown>{item.content}</ReactMarkdown>
+                                <ReactMarkdown
+                                    remarkPlugins={[remarkGfm]}
+                                    components={{
+                                        table: ({ ...props }) => (
+                                            <div className="markdown-table-wrapper">
+                                                <table {...props} />
+                                            </div>
+                                        )
+                                    }}
+                                >
+                                    {item.content}
+                                </ReactMarkdown>
                             ) : (
                                 item.content
                             )}
@@ -262,7 +274,7 @@ const Coach = () => {
                             <span></span>
                             <span></span>
                             <span></span>
-                             <small>C-FIT Coach is typing...</small>
+                            <small>C-FIT Coach is typing...</small>
                         </div>
                     )}
                 </div>
