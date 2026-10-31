@@ -3,6 +3,7 @@ import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import logo from "../assets/c-fit-logo.png";
 import "./DashboardLayout.css";
+import Swal from "sweetalert2";
 
 const DashboardLayout = () => {
     const navigate = useNavigate();
@@ -10,12 +11,29 @@ const DashboardLayout = () => {
 
     const closeMenu = () => setMenuOpen(false);
 
+
     const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        closeMenu();
-        navigate("/login", { replace: true });
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You will be logged out of your C-FIT account.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#ff6b00",
+            cancelButtonColor: "#555555",
+            confirmButtonText: "Yes, log me out",
+            cancelButtonText: "Cancel",
+            background: "#111111",
+            color: "#ffffff",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                closeMenu();
+                navigate("/login", { replace: true });
+            }
+        });
     };
+
 
     return (
         <div className="dashboard-layout">
@@ -72,7 +90,7 @@ const DashboardLayout = () => {
                         Nutrition
                     </NavLink>
 
-                 
+
                 </nav>
 
                 <button

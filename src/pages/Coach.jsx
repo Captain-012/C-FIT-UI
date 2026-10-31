@@ -256,9 +256,13 @@ const Coach = () => {
                         </div>
                     ))}
 
+
                     {isLoading && (
-                        <div className="chat-message assistant">
-                            C-FIT is thinking...
+                        <div className="chat-message assistant typing-indicator">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                             <small>C-FIT Coach is typing...</small>
                         </div>
                     )}
                 </div>

@@ -508,7 +508,8 @@ const Workouts = () => {
 
             <section className="workouts-list">
                 {loading ? (
-                    <div className="workout-message">
+                    <div className="workout-loading">
+                        <div className="workout-spinner"></div>
                         <p>Loading your workouts...</p>
                     </div>
                 ) : error ? (

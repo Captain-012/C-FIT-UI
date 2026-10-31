@@ -90,9 +90,14 @@ const Progress = () => {
         </div>
       </header>
 
+
       {loading ? (
-        <p className="progress-message">Loading your progress...</p>
+        <div className="progress-loading">
+          <div className="progress-spinner"></div>
+          <p>Loading your progress...</p>
+        </div>
       ) : error ? (
+
         <p className="progress-error">{error}</p>
       ) : (
         <>
