@@ -132,6 +132,36 @@
     padding-right: 45px;
 }
 
+.login-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.login-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    display: inline-block;
+    animation: login-spin 0.7s linear infinite;
+}
+
+.login-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+@keyframes login-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+
 .password-toggle {
     position: absolute;
     top: 50%;
@@ -346,6 +376,48 @@
     color: #aaa;
 
     line-height: 1.7;
+}
+
+.google-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    width: 100%;
+    padding: 13px 16px;
+    margin-top: 12px;
+
+    background: #151515;
+    border: 1px solid #333;
+    border-radius: 8px;
+
+    color: #eee;
+    font-size: 14px;
+    font-weight: 500;
+
+    animation: loading-appear 0.3s ease;
+}
+
+.google-loading .login-spinner {
+    width: 17px;
+    height: 17px;
+    border: 2px solid rgba(255, 107, 0, 0.2);
+    border-top-color: #ff6b00;
+    border-right-color: #ff6b00;
+    flex-shrink: 0;
+}
+
+@keyframes loading-appear {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* MOBILE */

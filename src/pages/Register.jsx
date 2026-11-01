@@ -6,6 +6,7 @@ import logo from "../assets/c-fit-logo.png";
 import "./Register.css"
 import { GoogleLogin } from "@react-oauth/google";
 import { Eye, EyeOff } from "lucide-react";
+import API_URL from "../config/api.js";
 
 
 
@@ -15,6 +16,8 @@ const Register = () => {
     const [turnstileToken, setTurnstileToken] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [googleLoading, setGoogleLoading] = useState(false);
 
     const [formData, setFormData] = useState({
         name: "",
@@ -33,14 +36,16 @@ const Register = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
 
+        if (isLoading) return;
+
         if (formData.password !== formData.confirmPassword) {
             Swal.fire({
                 icon: "warning",
-                title: "",
-                text: "Password do not match."
+                title: "Password Mismatch",
+                text: "Your passwords do not match."
             });
             return;
-        };
+        }
 
         if (!turnstileToken) {
             Swal.fire({
@@ -51,11 +56,13 @@ const Register = () => {
             return;
         }
 
+        setIsLoading(true);
+
         try {
-            const response = await fetch('http://localhost:4001/auth/register', {
-                method: 'POST',
+            const response = await fetch(`${API_URL}/auth/register`, {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     name: formData.name,
@@ -65,28 +72,40 @@ const Register = () => {
                 })
             });
 
+            const data = await response.json();
+
             if (!response.ok) {
-                const errorData = await response.json();
-                console.log("Registration failed:", errorData);
+                Swal.fire({
+                    icon: "error",
+                    title: "Registration Failed",
+                    text: data.message || "Unable to create your account. Please try again."
+                });
                 return;
             }
 
-            const data = await response.json();
-            console.log("User registered successfully:", data);
-
-            Swal.fire({
+            await Swal.fire({
                 icon: "success",
                 title: "Registration Successful!",
                 text: "Your C-FIT account has been created.",
-                confirmButtonText: 'OK'
-            }).then(() => {
-                navigate("/login")
-            })
+                confirmButtonText: "OK"
+            });
+
+            navigate("/login");
 
         } catch (error) {
             console.error("Error registering user:", error);
+
+            Swal.fire({
+                icon: "error",
+                title: "Something went wrong",
+                text: "Unable to connect to the server. Please try again."
+            });
+
+        } finally {
+            setIsLoading(false);
         }
     };
+
 
     return (
         <div className="register-page">
@@ -203,8 +222,16 @@ const Register = () => {
                     <button
                         type="submit"
                         className="register-button"
+                        disabled={isLoading}
                     >
-                        Create Account →
+                        {isLoading ? (
+                            <>
+                                <span className="register-spinner"></span>
+                                Creating account...
+                            </>
+                        ) : (
+                            "Create Account →"
+                        )}
                     </button>
 
                 </form>
@@ -213,13 +240,16 @@ const Register = () => {
                     <span>OR</span>
                 </div>
 
+
                 <GoogleLogin
                     onSuccess={async (credentialResponse) => {
-                        console.log("Google Login Success:", credentialResponse);
+                        if (googleLoading) return;
+
+                        setGoogleLoading(true);
 
                         try {
                             const response = await fetch(
-                                "http://localhost:4001/auth/google",
+                                `${API_URL}/auth/google`,
                                 {
                                     method: "POST",
                                     headers: {
@@ -232,25 +262,56 @@ const Register = () => {
                             );
 
                             const data = await response.json();
-                            console.log("Google backend response:", data);
-                            if (data.token) {
-                                localStorage.setItem("token", data.token);
 
-                                navigate("/dashboard")
-
+                            if (!response.ok) {
+                                throw new Error(
+                                    data.message || "Google registration failed"
+                                );
                             }
 
+                            localStorage.setItem("token", data.token);
+                            localStorage.setItem("user", JSON.stringify(data.user));
+
+                            await Swal.fire({
+                                icon: "success",
+                                title: "Welcome to C-FIT!",
+                                text: "Your Google account is ready."
+                            });
+
+                            navigate("/dashboard");
+
                         } catch (error) {
-                            console.error("Google authentication error:", error);
+                            console.error("Google registration error:", error);
+
+                            Swal.fire({
+                                icon: "error",
+                                title: "Google Registration Failed",
+                                text: error.message || "Please try again."
+                            });
+
+                        } finally {
+                            setGoogleLoading(false);
                         }
                     }}
+
                     onError={() => {
-                        console.log("Google login Failed");
+                        setGoogleLoading(false);
 
+                        Swal.fire({
+                            icon: "error",
+                            title: "Google Sign-in Failed",
+                            text: "Google authentication was unsuccessful. Please try again."
+                        });
                     }}
-
-
                 />
+
+                {googleLoading && (
+                    <div className="google-loading">
+                        <span className="login-spinner"></span>
+                        <span>Creating your C-FIT account...</span>
+                    </div>
+                )}
+
 
                 <p className="register-login">
                     Already have an account?

@@ -3,6 +3,7 @@ import "./Coach.css";
 import ReactMarkdown from "react-markdown";
 import Swal from "sweetalert2";
 import remarkGfm from "remark-gfm";
+import API_URL from "../config/api.js";
 
 const Coach = () => {
 
@@ -19,7 +20,7 @@ const Coach = () => {
                 if (!token) return;
 
                 const response = await fetch(
-                    "http://localhost:4001/coach/history",
+                    `${API_URL}/coach/history`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -67,7 +68,7 @@ const Coach = () => {
         try {
             const token = localStorage.getItem("token");
 
-            const response = await fetch("http://localhost:4001/coach", {
+            const response = await fetch(`${API_URL}/coach`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -118,7 +119,7 @@ const Coach = () => {
             const token = localStorage.getItem("token");
 
             const response = await fetch(
-                "http://localhost:4001/coach/history",
+                `${API_URL}/coach/history`,
                 {
                     method: "DELETE",
                     headers: {

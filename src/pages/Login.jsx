@@ -5,6 +5,7 @@ import logo from "../assets/c-fit-logo.png"
 import "./Login.css";
 import { Eye, EyeOff } from "lucide-react";
 import { GoogleLogin } from "@react-oauth/google";
+import API_URL from "../config/api.js";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -12,12 +13,19 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [googleLoading, setGoogleLoading] = useState(false);
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
+        if (isLoading) return;
+
+        setIsLoading(true);
+
         try {
-            const response = await fetch("http://localhost:4001/auth/login", {
+            const response = await fetch(`${API_URL}/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -42,23 +50,29 @@ const Login = () => {
 
             localStorage.setItem("token", data.token);
 
-            console.log(data);
-
             Swal.fire({
                 icon: "success",
                 title: "Login Successful!",
                 text: "Your C-FIT account has been logged in successfully",
-                confirmButtonText: 'OK'
+                confirmButtonText: "OK"
             }).then(() => {
-                navigate("/dashboard")
-            })
-
-
+                navigate("/dashboard");
+            });
 
         } catch (error) {
             console.log(error);
+
+            Swal.fire({
+                icon: "error",
+                title: "Something went wrong",
+                text: "Unable to connect to the server. Please try again."
+            });
+
+        } finally {
+            setIsLoading(false);
         }
     };
+
 
     return (
         <div className="login-page">
@@ -137,8 +151,16 @@ const Login = () => {
                     <button
                         type="submit"
                         className="login-button"
+                        disabled={isLoading}
                     >
-                        Sign In →
+                        {isLoading ? (
+                            <>
+                                <span className="login-spinner"></span>
+                                Signing in...
+                            </>
+                        ) : (
+                            "Sign In →"
+                        )}
                     </button>
 
                 </form>
@@ -147,11 +169,16 @@ const Login = () => {
                     <span>OR</span>
                 </div>
 
+
                 <GoogleLogin
                     onSuccess={async (credentialResponse) => {
+                        if (googleLoading) return;
+
+                        setGoogleLoading(true);
+
                         try {
                             const response = await fetch(
-                                "http://localhost:4001/auth/google",
+                                `${API_URL}/auth/google`,
                                 {
                                     method: "POST",
                                     headers: {
@@ -174,13 +201,14 @@ const Login = () => {
                             localStorage.setItem("token", data.token);
                             localStorage.setItem("user", JSON.stringify(data.user));
 
-                            Swal.fire({
+                            await Swal.fire({
                                 icon: "success",
                                 title: "Welcome to C-FIT!",
                                 text: "Google login successful.",
                             });
 
                             navigate("/dashboard");
+
                         } catch (error) {
                             console.error("Google login error:", error);
 
@@ -189,9 +217,14 @@ const Login = () => {
                                 title: "Google Login Failed",
                                 text: error.message || "Please try again.",
                             });
+
+                        } finally {
+                            setGoogleLoading(false);
                         }
                     }}
                     onError={() => {
+                        setGoogleLoading(false);
+
                         Swal.fire({
                             icon: "error",
                             title: "Google Login Failed",
@@ -199,6 +232,14 @@ const Login = () => {
                         });
                     }}
                 />
+
+                {googleLoading && (
+                    <div className="google-loading">
+                        <span className="login-spinner"></span>
+                        Verifying Google account...
+                    </div>
+                )}
+
 
                 <p className="login-register">
                     Don't have an account?

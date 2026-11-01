@@ -208,6 +208,34 @@
     background: #292929;
 }
 
+.register-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.register-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.register-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    display: inline-block;
+    animation: register-spin 0.7s linear infinite;
+}
+
+@keyframes register-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 /* GOOGLE */
 
 .google-button {
@@ -231,6 +259,32 @@
 .google-button:hover {
     border-color: #444;
     background: #151515;
+}
+
+.google-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 13px 16px;
+    margin-top: 12px;
+    background: #151515;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #eee;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.google-loading .login-spinner {
+    width: 17px;
+    height: 17px;
+    border: 2px solid rgba(255, 107, 0, 0.2);
+    border-top-color: #ff6b00;
+    border-right-color: #ff6b00;
+    border-radius: 50%;
+    animation: login-spin 0.7s linear infinite;
 }
 
 /* LOGIN LINK */

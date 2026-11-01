@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Dashboard.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import API_URL from "../config/api.js";
 
 export const Dashboard = () => {
     const [workouts, setWorkouts] = useState([]);
@@ -28,7 +29,7 @@ export const Dashboard = () => {
                 }
 
                 const response = await fetch(
-                    "http://localhost:4001/auth/me",
+                    `${API_URL}/auth/me`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -64,7 +65,7 @@ export const Dashboard = () => {
             const token = localStorage.getItem("token");
 
             const response = await fetch(
-                "http://localhost:4001/workouts?page=1&limit=5", 
+                `${API_URL}/workouts?page=1&limit=5`, 
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -100,7 +101,7 @@ export const Dashboard = () => {
 
             // Fetch the first page to learn the total number of workouts
             const firstResponse = await fetch(
-                "http://localhost:4001/workouts?page=1&limit=50",
+                `${API_URL}/workouts?page=1&limit=50`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -119,7 +120,7 @@ export const Dashboard = () => {
             // Fetch additional pages if there are more than 50 workouts
             for (let page = 2; page <= firstData.totalPages; page++) {
                 const response = await fetch(
-                    `http://localhost:4001/workouts?page=${page}&limit=50`,
+                    `${API_URL}/workouts?page=${page}&limit=50`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,

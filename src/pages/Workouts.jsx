@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Workouts.css";
 import Swal from "sweetalert2";
+import API_URL from "../config/api.js";
 
 const Workouts = () => {
 
@@ -53,7 +54,7 @@ const Workouts = () => {
             const queryString = params.toString();
 
             const response = await fetch(
-                `http://localhost:4001/workouts${queryString ? `?${queryString}` : ""}`,
+                `${API_URL}/workouts${queryString ? `?${queryString}` : ""}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -127,8 +128,8 @@ const Workouts = () => {
 
             const response = await fetch(
                 isEditing
-                    ? `http://localhost:4001/workouts/${editingWorkoutId}`
-                    : "http://localhost:4001/workouts",
+                    ? `${API_URL}/workouts/${editingWorkoutId}`
+                    : `${API_URL}/workouts`,
                 {
                     method: isEditing ? "PUT" : "POST",
                     headers: {
@@ -226,7 +227,7 @@ const Workouts = () => {
             const token = localStorage.getItem("token");
 
             const response = await fetch(
-                `http://localhost:4001/workouts/${workoutId}`,
+                `${API_URL}/workouts/${workoutId}`,
                 {
                     method: "DELETE",
                     headers: {
@@ -280,7 +281,7 @@ const Workouts = () => {
             const token = localStorage.getItem("token");
 
             const response = await fetch(
-                `http://localhost:4001/workouts/${workoutId}/complete`,
+                `${API_URL}/workouts/${workoutId}/complete`,
                 {
                     method: "PATCH",
                     headers: {

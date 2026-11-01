@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Progress.css";
+import API_URL from "../config/api.js";
 
 const Progress = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -13,7 +14,7 @@ const Progress = () => {
         let allWorkouts = [];
 
         const firstResponse = await fetch(
-          "http://localhost:4001/workouts?page=1&limit=50",
+          `${API_URL}/workouts?page=1&limit=50`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -33,7 +34,7 @@ const Progress = () => {
 
         for (let page = 2; page <= firstData.totalPages; page++) {
           const response = await fetch(
-            `http://localhost:4001/workouts?page=${page}&limit=50`,
+            `${API_URL}/workouts?page=${page}&limit=50`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
