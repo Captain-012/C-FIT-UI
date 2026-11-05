@@ -389,3 +389,138 @@
         padding: 12px 16px;
     }
 }
+
+
+/* AI-generated workout plan */
+.coach-workout-plan {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 20px;
+    padding: 20px;
+    background: #151515;
+    border: 1px solid #393939;
+    border-radius: 14px;
+}
+
+.coach-workout-plan h3 {
+    color: #ff6b00;
+    font-size: 21px;
+    margin: 0 0 12px;
+}
+
+.coach-workout-plan>p {
+    color: #bbbbbb;
+    line-height: 1.7;
+    margin-bottom: 18px;
+}
+
+.workout-plan-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.workout-plan-info span {
+    padding: 7px 11px;
+    border-radius: 6px;
+    background: #292019;
+    border: 1px solid #51301b;
+    color: #ffad75;
+    font-size: 12px;
+}
+
+.coach-workout-plan h4 {
+    color: #ffffff;
+    font-size: 17px;
+    margin-bottom: 14px;
+}
+
+.workout-exercise {
+    padding: 15px;
+    margin-bottom: 12px;
+    background: #202020;
+    border: 1px solid #363636;
+    border-left: 3px solid #ff6b00;
+    border-radius: 9px;
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+.workout-exercise:hover {
+    border-color: #ff6b00;
+    transform: translateY(-2px);
+}
+
+.workout-exercise h5 {
+    color: #ff8b3d;
+    font-size: 15px;
+    margin: 0 0 12px;
+}
+
+.exercise-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.exercise-details span {
+    padding: 6px 9px;
+    background: #302016;
+    color: #ffb27f;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+.workout-exercise p {
+    color: #aaaaaa;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 8px 0 0;
+}
+
+/* Save workout button */
+.save-workout-btn {
+    margin-top: 15px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #ff6b00;
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.save-workout-btn:hover:not(:disabled) {
+    background: #e65f00;
+    transform: translateY(-2px);
+}
+
+.save-workout-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* Mobile workout layout */
+@media (max-width: 600px) {
+    .coach-workout-plan {
+        padding: 14px;
+    }
+
+    .coach-workout-plan h3 {
+        font-size: 18px;
+    }
+
+    .workout-plan-info {
+        gap: 7px;
+    }
+
+    .workout-exercise {
+        padding: 12px;
+    }
+
+    .save-workout-btn {
+        width: 100%;
+    }
+}

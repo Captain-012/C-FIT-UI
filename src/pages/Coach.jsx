@@ -10,6 +10,7 @@ const Coach = () => {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [savingWorkoutIndex, setSavingWorkoutIndex] = useState(null);
 
 
     useEffect(() => {
@@ -45,6 +46,94 @@ const Coach = () => {
         loadConversation();
     }, []);
 
+    const handleSaveWorkout = async (workoutIndex) => {
+        const selectedMessage = messages[workoutIndex];
+
+        if (
+            !selectedMessage?.workout ||
+            selectedMessage.saved ||
+            savingWorkoutIndex !== null
+        ) {
+            return;
+        }
+
+        setSavingWorkoutIndex(workoutIndex);
+
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await fetch(`${API_URL}/workouts`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(selectedMessage.workout),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Failed to save workout");
+            }
+
+            // Update the saved status in MongoDB
+            const statusResponse = await fetch(
+                `${API_URL}/coach/history/save-workout`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        messageIndex: workoutIndex,
+                    }),
+                }
+            );
+
+            const statusData = await statusResponse.json();
+
+            if (!statusResponse.ok) {
+                console.error(
+                    "Workout saved, but status update failed:",
+                    statusData.message
+                );
+            }
+
+            setMessages(previous =>
+                previous.map((item, index) =>
+                    index === workoutIndex
+                        ? { ...item, saved: true }
+                        : item
+                )
+            );
+
+            await Swal.fire({
+                icon: "success",
+                title: "Workout Saved!",
+                text: "Your workout has been added to My Workouts.",
+                background: "#111111",
+                color: "#ffffff",
+                confirmButtonColor: "#ff6b00",
+            });
+
+        } catch (error) {
+            console.error("Save workout error:", error);
+
+            Swal.fire({
+                icon: "error",
+                title: "Unable to Save",
+                text: error.message,
+                background: "#111111",
+                color: "#ffffff",
+                confirmButtonColor: "#ff6b00",
+            });
+
+        } finally {
+            setSavingWorkoutIndex(null);
+        }
+    };
 
     const handleSendMessage = async (e) => {
         e.preventDefault();
@@ -91,9 +180,10 @@ const Coach = () => {
             const aiMessage = {
                 role: "assistant",
                 content: data.reply,
+                workout: data.workout || null
             };
 
-            setMessages((previous) => [...previous, aiMessage]);
+            setMessages(previous => [...previous, aiMessage]);
 
         } catch (error) {
             console.error("AI Coach error:", error);
@@ -251,18 +341,87 @@ const Coach = () => {
                             key={index}
                         >
                             {item.role === "assistant" ? (
-                                <ReactMarkdown
-                                    remarkPlugins={[remarkGfm]}
-                                    components={{
-                                        table: ({ ...props }) => (
-                                            <div className="markdown-table-wrapper">
-                                                <table {...props} />
+                                <>
+                                    <ReactMarkdown
+                                        remarkPlugins={[remarkGfm]}
+                                        components={{
+                                            table: ({ ...props }) => (
+                                                <div className="markdown-table-wrapper">
+                                                    <table {...props} />
+                                                </div>
+                                            )
+                                        }}
+                                    >
+                                        {item.content}
+                                    </ReactMarkdown>
+
+
+                                    {item.workout && (
+                                        <div className="coach-workout-plan">
+                                            <h3>{item.workout.name}</h3>
+
+                                            <p>{item.workout.description}</p>
+
+                                            <div className="workout-plan-info">
+                                                <span>Category: {item.workout.category}</span>
+                                                <span>Difficulty: {item.workout.difficulty}</span>
+                                                <span>Duration: {item.workout.duration} minutes</span>
                                             </div>
-                                        )
-                                    }}
-                                >
-                                    {item.content}
-                                </ReactMarkdown>
+
+                                            <h4>Exercises</h4>
+
+                                            {item.workout.exercises?.map((exercise, exerciseIndex) => (
+                                                <div
+                                                    className="workout-exercise"
+                                                    key={exerciseIndex}
+                                                >
+                                                    <h5>
+                                                        {exerciseIndex + 1}. {exercise.name}
+                                                    </h5>
+
+                                                    <div className="exercise-details">
+                                                        {exercise.sets != null && (
+                                                            <span>{exercise.sets} sets</span>
+                                                        )}
+
+                                                        {exercise.reps != null && (
+                                                            <span>{exercise.reps} reps</span>
+                                                        )}
+
+                                                        {exercise.duration != null && (
+                                                            <span>{exercise.duration} seconds</span>
+                                                        )}
+
+                                                        {exercise.rest != null && (
+                                                            <span>{exercise.rest} seconds rest</span>
+                                                        )}
+                                                    </div>
+
+                                                    {exercise.instructions && (
+                                                        <p>{exercise.instructions}</p>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+
+                                    {item.workout && (
+                                        <button
+                                            className="save-workout-btn"
+                                            onClick={() => handleSaveWorkout(index)}
+                                            disabled={
+                                                savingWorkoutIndex !== null || item.saved
+                                            }
+                                        >
+                                            {item.saved
+                                                ? "Added to My Workouts"
+                                                : savingWorkoutIndex === index
+                                                    ? "Saving..."
+                                                    : "Add to My Workouts"}
+                                        </button>
+                                    )}
+                                </>
                             ) : (
                                 item.content
                             )}
